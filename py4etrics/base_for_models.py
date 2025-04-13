@@ -5,9 +5,9 @@ Created by Tetsu Haruyama
 import warnings
 import numpy as np
 import pandas as pd
-from scipy.stats import norm,chi2
+from scipy.stats import norm, chi2
 import statsmodels.api as sm
-from statsmodels.base.model import LikelihoodModel,LikelihoodModelResults,ResultMixin
+from statsmodels.base.model import LikelihoodModel, LikelihoodModelResults, ResultMixin
 from statsmodels.tools.decorators import cache_readonly
 from statsmodels.tools.numdiff import approx_fprime
 
