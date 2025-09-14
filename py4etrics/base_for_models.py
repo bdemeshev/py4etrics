@@ -322,7 +322,7 @@ class AdditionalAttributes_Truncreg(object):
     @cache_readonly
     def fittedvalues(self):
         """
-        y_hat (Linear fitted values)
+        Latent variable fitted values = y_star_hat
         """
         return self.exog @ self.params[:-1].T
 
@@ -330,7 +330,7 @@ class AdditionalAttributes_Truncreg(object):
     @cache_readonly
     def resid(self):
         """
-        Residuals = y - y_hat
+        Latent residuals = y - y_star_hat
         """
         return self.endog - self.fittedvalues
 
@@ -338,7 +338,7 @@ class AdditionalAttributes_Truncreg(object):
     @cache_readonly
     def fitted_endog(self):
         """
-        E(y|x, cond)
+        Fitted E(y|x)
             cond for left-truncated: y > left-truncated value
             cond for left-truncated: y < right-truncated value
             cond for left- & right-truncated: left-truncated value < y < right-truncated value
@@ -364,13 +364,14 @@ class AdditionalAttributes_Truncreg(object):
         elif ~np.isneginf(_l) & ~np.isposinf(_r):
             first_term = Xb*norm.cdf(Xb, loc=_l, scale=sigma)
             second_term = Xb*norm.cdf(Xb, loc=_r, scale=sigma)
-            third_term = sigma*( norm.pdf(Xb, loc=_l, scale=sigma) - norm.pdf(Xb, loc=_r, scale=sigma) )
+            third_term = sigma*(norm.pdf(Xb, loc=_l, scale=sigma) - norm.pdf(Xb, loc=_r, scale=sigma))
             return first_term - second_term + third_term
 
         else:
             warnings.warn('\n\n**********************************************************************\n\n'+
                           'Equivalent to untruncated Maximum Likelihood Estimation\n\n'+
                           '**********************************************************************\n')
+            return self.exog @ self.params[:-1].T
 
 #-----
 
